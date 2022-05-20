@@ -7,11 +7,10 @@ let inputSizeBoxRef;
 let outputSizeBoxRef;
 let startBtnRef;
 
-window.addEventListener("DOMContentLoaded", onResizeWindow);
+window.addEventListener("DOMContentLoaded", onResizeWindow, { once: true });
 window.addEventListener("resize", onResizeWindow);
 
 function onResizeWindow(e) {
-  console.log(e);
   wrapperRef.style.height = "600px";
   wrapperRef.style.width = "600px";
   panelRef.style.width = "600px";
@@ -50,7 +49,7 @@ function getRefs() {
   startBtnRef = document.querySelector(".start-game");
 
   inputSizeBoxRef.addEventListener("input", onInputSizeBox);
-  startBtnRef.addEventListener("click", onStartBtn);
+  startBtnRef.addEventListener("click", onStartBtn, { once: true });
 }
 
 function onInputSizeBox() {
@@ -82,6 +81,8 @@ function onInputSizeBox() {
 function onStartBtn() {
   renderBox();
   getRefsRefreshBtn();
+  inputSizeBoxRef.removeEventListener("input", onInputSizeBox);
+  wrapperRef.addEventListener("click", onWrapperClick);
 }
 
 function createBoxItemsMarkup(amount) {
@@ -121,8 +122,6 @@ function renderBox() {
   wrapperRef.append(...createBoxItemsMarkup(sizeBox));
   panelRef.insertAdjacentHTML("beforeend", createPanelMarkup());
 }
-
-wrapperRef.addEventListener("click", onWrapperClick);
 
 function onWrapperClick(e) {
   if (
@@ -204,6 +203,7 @@ function checkSuccess() {
 
   if (isSuccess || isSuccessReverse) {
     createFinishScreenMarkup();
+    wrapperRef.removeEventListener("click", onWrapperClick);
   }
 }
 
@@ -235,6 +235,8 @@ function onPlayAgainBtn() {
 
   playAgainBtnRef?.removeEventListener("click", onPlayAgainBtn);
 }
+
+// Для разработки
 
 // const sort = document.querySelector("#sort");
 

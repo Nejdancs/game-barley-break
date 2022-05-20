@@ -14,6 +14,12 @@ body {
   background-color: #0f0f0f;
 }
 
+@media screen and (max-height: 360px) {
+  body {
+    justify-content: start;
+  }
+}
+
 input[type="number"] {
   -moz-appearance: textfield;
 }
@@ -116,8 +122,10 @@ input::-webkit-inner-spin-button {
   margin: 0 auto;
   width: 600px;
   max-width: calc(100%);
+  min-width: 320px;
   height: 600px;
   max-height: calc(100% - 50px);
+  min-height: 320px;
 
   border: 15px solid #4f2109;
   border-radius: 5px;
