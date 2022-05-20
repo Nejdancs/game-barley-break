@@ -7,6 +7,20 @@ let inputSizeBoxRef;
 let outputSizeBoxRef;
 let startBtnRef;
 
+window.addEventListener("DOMContentLoaded", onResizeWindow);
+window.addEventListener("resize", onResizeWindow);
+
+function onResizeWindow(e) {
+  console.log(e);
+  wrapperRef.style.height = "600px";
+  wrapperRef.style.width = "600px";
+  panelRef.style.width = "600px";
+
+  wrapperRef.style.height = window.getComputedStyle(wrapperRef).width;
+  wrapperRef.style.width = window.getComputedStyle(wrapperRef).height;
+  panelRef.style.width = window.getComputedStyle(wrapperRef).height;
+}
+
 createStartGameMarkup();
 function createStartGameMarkup() {
   const startMarkup = `<div class="start-wrapper">
@@ -21,7 +35,7 @@ function createStartGameMarkup() {
           min="2"
           max="10"
         />
-        <p class="size-box-text-output"></p>
+        <p class="size-box-text-output">&nbsp;</p>
         <button class="start-game" disabled type="button">Начать игру</button>
       </div>`;
 
@@ -83,14 +97,14 @@ function createBoxItemsMarkup(amount) {
 
     boxItems.push(box);
   }
-  boxItems[0].classList.add("empty");
-  boxItems[0].textContent = "";
+  boxItems[boxItems.length - 1].classList.add("empty");
+  boxItems[boxItems.length - 1].textContent = "";
 
-  const withoutFirst = boxItems.slice(1);
+  const withoutLast = boxItems.slice(0, boxItems.length - 1);
 
-  randomSort(withoutFirst);
+  randomSort(withoutLast);
 
-  return [boxItems[0], ...withoutFirst];
+  return [...withoutLast, boxItems[boxItems.length - 1]];
 }
 
 function createPanelMarkup() {

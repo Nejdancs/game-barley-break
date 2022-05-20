@@ -56,7 +56,7 @@ input::-webkit-inner-spin-button {
   border: 2px solid #ccc;
   border-radius: 10px;
   font-size: 24px;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 }
 
 .size-box-input.valid {
@@ -68,11 +68,9 @@ input::-webkit-inner-spin-button {
 }
 
 .size-box-text-output {
-  position: absolute;
-  bottom: 230px;
-
   color: #ebba34;
   font-size: 20px;
+  margin-bottom: 30px;
 }
 
 .start-game {
@@ -85,6 +83,30 @@ input::-webkit-inner-spin-button {
   cursor: pointer;
 }
 
+@media screen and (max-width: 420px), (max-height: 500px) {
+  .size-box-text {
+    margin-bottom: 30px;
+    font-size: 22px;
+  }
+
+  .size-box-input {
+    width: 70px;
+    height: 40px;
+    margin-bottom: 20px;
+  }
+
+  .size-box-text-output {
+    color: #ebba34;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .start-game {
+    padding: 10px 20px;
+    font-size: 20px;
+  }
+}
+
 .wrapper {
   position: relative;
   display: flex;
@@ -93,7 +115,9 @@ input::-webkit-inner-spin-button {
   flex-shrink: 0;
   margin: 0 auto;
   width: 600px;
+  max-width: calc(100%);
   height: 600px;
+  max-height: calc(100% - 50px);
 
   border: 15px solid #4f2109;
   border-radius: 5px;
@@ -119,18 +143,25 @@ input::-webkit-inner-spin-button {
   cursor: initial;
 }
 
-.finish-screen {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+@media screen and (max-width: 480px), (max-height: 550px) {
+  .box {
+    font-size: 24px;
+  }
+}
 
+@media screen and (max-width: 400px), (max-height: 480px) {
+  .box {
+    font-size: 18px;
+  }
+}
+
+.finish-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   background-color: #914414;
 }
 
@@ -143,6 +174,7 @@ input::-webkit-inner-spin-button {
 }
 
 .succes-text span {
+  display: block;
   font-size: 32px;
   font-weight: normal;
 }
@@ -161,12 +193,29 @@ input::-webkit-inner-spin-button {
   background-color: #c99e2a;
 }
 
+@media screen and (max-width: 480px), (max-height: 550px) {
+  .succes-text {
+    font-size: 36px;
+    margin-bottom: 25px;
+  }
+
+  .succes-text span {
+    font-size: 24px;
+  }
+
+  .again {
+    padding: 7px 15px;
+    font-size: 18px;
+  }
+}
+
 .stepcount {
   display: flex;
   align-items: center;
   padding-left: 25px;
   width: 200px;
   height: 40px;
+  font-size: 16px;
   background-color: #4f2109;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 50px;
@@ -184,6 +233,8 @@ input::-webkit-inner-spin-button {
   padding-left: 25px;
   width: 200px;
   height: 40px;
+  font-size: 16px;
+
   background-color: #4f2109;
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 5px;
@@ -200,4 +251,43 @@ input::-webkit-inner-spin-button {
   position: relative;
   top: -12px;
   width: 600px;
+  max-width: calc(100%);
+}
+
+@media screen and (max-width: 420px), (max-height: 500px) {
+  .stepcount {
+    width: 150px;
+    height: 40px;
+    font-size: 12px;
+  }
+
+  .refresh {
+    width: 150px;
+    height: 40px;
+    font-size: 12px;
+  }
+
+  @media screen and (max-width: 350px), (max-height: 400px) {
+    .stepcount {
+      width: 120px;
+      height: 40px;
+      font-size: 10px;
+    }
+
+    .refresh {
+      padding-left: 15px;
+      width: 120px;
+      height: 40px;
+      font-size: 10px;
+    }
+  }
+
+  .panel {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    top: -12px;
+    width: 600px;
+    max-width: calc(100%);
+  }
 }
