@@ -1,3 +1,6 @@
+import storage from "./storage.js";
+const { saveLocaleStorage, getLocalStorage, removeLocalStorage } = storage;
+
 const wrapperRef = document.querySelector(".wrapper");
 const panelRef = document.querySelector(".panel");
 
@@ -6,6 +9,7 @@ let sizeBox;
 let inputSizeBoxRef;
 let outputSizeBoxRef;
 let startBtnRef;
+let refreshBtnRef;
 
 window.addEventListener("DOMContentLoaded", onResizeWindow, { once: true });
 window.addEventListener("resize", onResizeWindow);
@@ -20,7 +24,14 @@ function onResizeWindow(e) {
   panelRef.style.width = window.getComputedStyle(wrapperRef).height;
 }
 
-createStartGameMarkup();
+if (getLocalStorage(`boxSize`)) {
+  createStartGameMarkup();
+  sizeBox = getLocalStorage(`boxSize`);
+  onStartBtn();
+} else {
+  createStartGameMarkup();
+}
+
 function createStartGameMarkup() {
   const startMarkup = `<div class="start-wrapper">
         <p class="size-box-text">
@@ -81,6 +92,7 @@ function onInputSizeBox() {
 function onStartBtn() {
   renderBox();
   getRefsRefreshBtn();
+  saveLocaleStorage(`boxSize`, sizeBox);
   inputSizeBoxRef.removeEventListener("input", onInputSizeBox);
   wrapperRef.addEventListener("click", onWrapperClick);
 }
@@ -101,6 +113,16 @@ function createBoxItemsMarkup(amount) {
   boxItems[boxItems.length - 1].classList.add("empty");
   boxItems[boxItems.length - 1].textContent = "";
 
+  const checkStorage = getLocalStorage(`boxSort`);
+
+  if (checkStorage) {
+    return checkStorage.reduce((acc, storageEl) => {
+      const findEl = boxItems.filter((el) => el.dataset.count === storageEl);
+
+      return [...acc, ...findEl];
+    }, []);
+  }
+
   const withoutLast = boxItems.slice(0, boxItems.length - 1);
 
   randomSort(withoutLast);
@@ -109,7 +131,9 @@ function createBoxItemsMarkup(amount) {
 }
 
 function createPanelMarkup() {
-  return `<div class="stepcount">ХОДОВ: <span>0</span></div>
+  stepCount = getLocalStorage(`boxStep`) ?? 0;
+
+  return `<div class="stepcount">ХОДОВ: <span>${stepCount}</span></div>
   <div class="refresh"><a class="refresh-btn">НАЧАТЬ ЗАНОВО</a></div>`;
 }
 
@@ -166,6 +190,13 @@ function swapBox(e) {
       target.parentNode.append(oldEl);
     }
   }
+
+  const arrCount = [...boxItems].reduce((acc, el) => {
+    const array = [...acc, el.dataset.count];
+    return array;
+  }, []);
+
+  saveLocaleStorage(`boxSort`, arrCount);
 }
 
 function stepCounter() {
@@ -173,10 +204,10 @@ function stepCounter() {
 
   stepCount += 1;
 
+  saveLocaleStorage(`boxStep`, stepCount);
+
   outputStepCountRef.textContent = stepCount;
 }
-
-let refreshBtnRef;
 
 function getRefsRefreshBtn() {
   refreshBtnRef = document.querySelector(".refresh-btn");
@@ -231,6 +262,10 @@ function getBtnRef() {
 
 function onPlayAgainBtn() {
   stepCount = 0;
+  removeLocalStorage(`boxSort`);
+  removeLocalStorage(`boxStep`);
+  removeLocalStorage(`boxSize`);
+
   createStartGameMarkup();
 
   playAgainBtnRef?.removeEventListener("click", onPlayAgainBtn);
